@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>canvas海报</title>
+    <style type="text/css">
+        *{margin:0;padding:0;}
+        html,body{height:100%;}
+        .box{height:100%;overflow:hidden;}
+    </style>
+</head>
+<body>
+<div class="box">
+    <canvas class="mycanvas"></canvas>
+</div>
+</body>
+<script src="canvas_js.js"></script>
+<script type="text/javascript">
+    var box = document.getElementsByClassName("box")[0],can = document.getElementsByClassName("mycanvas")[0],ctx = can.getContext("2d");
+    // 像素比
+    var ratio = pixelRatio(ctx);
+    function pr(number) {
+        return number*ratio;
+    }
+    // 页面宽高
+    w = box.offsetWidth;
+    h = box.offsetHeight;
+    
+    can.style.width = w+'px';
+    can.style.height = h+'px';
+    can.width = w*ratio;
+    can.height = h*ratio;
+    console.log(w * ratio+"~"+h*ratio);
+
+    // 背景图
+    preImage("poster.jpg",function (x,y,width,height) {
+        ctx.save();
+        ctx.drawImage(this,x,y,width,height);
+        ctx.restore();
+        drawText("在微信文章中嵌入你的联系方式", pr(w/7), pr(h/3), pr(w/1.23), pr(w/20), "#fff");
+        // 透明矩形
+        ctx.fillStyle = "rgba(0,0,0,.4)";
+        ctx.fillRect(pr(w/6.4),pr(h/2),pr(w/1.45),pr(h/11.36));
+        
+    },{"x":0,"y":0,"width":pr(w),"height":pr(h)});
+
+    // 二维码
+    preImage("qrcode.jpg",function (x,y,width,height) {
+        ctx.save();
+        ctx.drawImage(this,x,y,width,height);
+        ctx.restore();
+    },{"x":pr(w/2.98),"y":pr(h/1.572),"width":pr(w/3.05),"height":pr(h/4.8)});
+    
+    
+    
+    
+
+
+
+</script>
+</html>
